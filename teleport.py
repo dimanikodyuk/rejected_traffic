@@ -1,5 +1,6 @@
 from db.models import get_source, get_partner_token, get_lead_list, check_status_admitad
 from resources.api import send_request_admitad, get_status_admitad, send_request_finline, send_request_teleport
+from resources.api_logs import logger_teleport
 import urllib3
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
@@ -42,8 +43,8 @@ if __name__ == "__main__":
                                           p_fact_city, p_fact_street, p_fact_house, p_fact_apartment, i['partner_id'],
                                           p_sample_type)
     except TypeError as err:
-        print("[TypeError] teleport.py: " + str(err))
+        logger_teleport.error("[TypeError] teleport.py: " + str(err))
     except ValueError as err:
-        print("[ValueError] teleport.py: " + str(err))
+        logger_teleport.error("[ValueError] teleport.py: " + str(err))
     except Exception as err:
-        print("[Exception] teleport.py: " + str(err))
+        logger_teleport.error("[Exception] teleport.py: " + str(err))

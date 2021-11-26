@@ -28,8 +28,9 @@ def generate_token_admitad(p_base_header, p_client_id):
 
 
 def change(a):
-    b = a.encode('latin1')
-    c = b.decode('cp1251')
+    print(a)
+    b = a.encode('latin1', 'ignore')
+    c = b.decode('cp1251', 'ignore')
     return c
 
 
@@ -55,21 +56,23 @@ def send_request_admitad(p_camp_id, p_fisr_name, p_last_name, p_middle_name, p_b
 
         if p_type == 1:
             # -- містить короткий тип телефону v_mob_phone
-            payload = f'campaigns=%5B{p_camp_id}%5D&user_notified={p_user_notified}&test_mode={p_test_mode}&first_name={change(p_fisr_name)}&last_name={change(p_last_name)}&middle_name={change(p_middle_name)}&birth_date={p_birth_day}&mobile_phone={p_mob_phone}&occupation={change(p_occupaion)}&work_salary={p_work_salary}&work_organization={change(p_work_organization)}&work_phone={p_work_phone}&work_occupation={change(p_work_occupation)}&work_region_name={change(p_work_region_name)}&work_city_name={change(p_work_city_name)}&work_street={change(p_work_street)}&inn={p_inn}&work_house={change(p_work_house)}&email={p_email}&passport={p_passport}&passport_date={p_passport_date}&passport_title={change(p_passport_title)}&fact_region_name={change(p_fact_region_name)}&fact_city_name={change(p_fact_city_name)}&fact_street={change(p_fact_street)}&fact_house={change(p_fact_house)}&fact_flat={change(p_fact_flat)}&reg_region_name={change(p_reg_region_name)}&reg_city_name={change(p_reg_city_name)}&reg_house={change(p_reg_house)}&reg_flat={change(p_reg_flat)}&credit_sum={p_credit_sum}&credit_days={p_credit_days}&personal_data_agent={p_personal_data_agent}&application_received_date_by_client={p_application_received_date_by_client}'
+            payload = f'campaigns=%5B{p_camp_id}%5D&user_notified={p_user_notified}&test_mode={p_test_mode}&first_name={p_fisr_name}&last_name={p_last_name}&middle_name={p_middle_name}&birth_date={p_birth_day}&mobile_phone={p_mob_phone}&occupation={p_occupaion}&work_salary={p_work_salary}&work_organization={p_work_organization}&work_phone={p_work_phone}&work_occupation={p_work_occupation}&work_region_name={p_work_region_name}&work_city_name={p_work_city_name}&work_street={p_work_street}&inn={p_inn}&work_house={p_work_house}&email={p_email}&passport={p_passport}&passport_date={p_passport_date}&passport_title={p_passport_title}&fact_region_name={p_fact_region_name}&fact_city_name={p_fact_city_name}&fact_street={p_fact_street}&fact_house={change(p_fact_house)}&fact_flat={p_fact_flat}&reg_region_name={p_reg_region_name}&reg_city_name={p_reg_city_name}&reg_house={p_reg_house}&reg_flat={p_reg_flat}&credit_sum={p_credit_sum}&credit_days={p_credit_days}&personal_data_agent={p_personal_data_agent}&application_received_date_by_client={p_application_received_date_by_client}'
         elif p_type == 2:
             # -- містить довгий тип телефону v_mobile_phone
-            payload = f'campaigns=%5B{p_camp_id}%5D&user_notified={p_user_notified}&test_mode={p_test_mode}&first_name={change(p_fisr_name)}&last_name={change(p_last_name)}&middle_name={change(p_middle_name)}&birth_date={p_birth_day}&mobile_phone=%2B{p_mobile_phone}&occupation={change(p_occupaion)}&work_salary={p_work_salary}&work_organization={change(p_work_organization)}&work_phone={p_work_phone}&work_occupation={change(p_work_occupation)}&work_region_name={change(p_work_region_name)}&work_city_name={change(p_work_city_name)}&work_street={change(p_work_street)}&inn={p_inn}&work_house={change(p_work_house)}&email={p_email}&passport={p_passport}&passport_date={p_passport_date}&passport_title={change(p_passport_title)}&fact_region_name={change(p_fact_region_name)}&fact_city_name={change(p_fact_city_name)}&fact_street={change(p_fact_street)}&fact_house={change(p_fact_house)}&fact_flat={change(p_fact_flat)}&reg_region_name={change(p_reg_region_name)}&reg_city_name={change(p_reg_city_name)}&reg_house={change(p_reg_house)}&reg_flat={change(p_reg_flat)}&credit_sum={p_credit_sum}&credit_days={p_credit_days}&personal_data_agent={p_personal_data_agent}&application_received_date_by_client={p_application_received_date_by_client}'
+            payload = f'campaigns=%5B{p_camp_id}%5D&user_notified={p_user_notified}&test_mode={p_test_mode}&first_name={p_fisr_name}&last_name={p_last_name}&middle_name={p_middle_name}&birth_date={p_birth_day}&mobile_phone=%2B{p_mobile_phone}&occupation={p_occupaion}&work_salary={p_work_salary}&work_organization={p_work_organization}&work_phone={p_work_phone}&work_occupation={p_work_occupation}&work_region_name={p_work_region_name}&work_city_name={p_work_city_name}&work_street={p_work_street}&inn={p_inn}&work_house={p_work_house}&email={p_email}&passport={p_passport}&passport_date={p_passport_date}&passport_title={p_passport_title}&fact_region_name={p_fact_region_name}&fact_city_name={p_fact_city_name}&fact_street={p_fact_street}&fact_house={change(p_fact_house)}&fact_flat={p_fact_flat}&reg_region_name={p_reg_region_name}&reg_city_name={p_reg_city_name}&reg_house={p_reg_house}&reg_flat={p_reg_flat}&credit_sum={p_credit_sum}&credit_days={p_credit_days}&personal_data_agent={p_personal_data_agent}&application_received_date_by_client={p_application_received_date_by_client}'
         elif p_type == 3:
             # -- містить короткий тип телефону v_mob_phone та поле v_subid - це дата народження в форматі 1992-10-10
-            payload = f'campaigns=%5B{p_camp_id}%5D&user_notified={p_user_notified}&test_mode={p_test_mode}&first_name={change(p_fisr_name)}&last_name={change(p_last_name)}&middle_name={change(p_middle_name)}&birth_date={p_birth_day}&mobile_phone={p_mob_phone}&occupation={change(p_occupaion)}&work_salary={p_work_salary}&work_organization={change(p_work_organization)}&work_phone={p_work_phone}&work_occupation={change(p_work_occupation)}&work_region_name={change(p_work_region_name)}&work_city_name={change(p_work_city_name)}&work_street={change(p_work_street)}&inn={p_inn}&work_house={change(p_work_house)}&email={p_email}&passport={p_passport}&passport_date={p_passport_date}&passport_title={change(p_passport_title)}&fact_region_name={change(p_fact_region_name)}&fact_city_name={change(p_fact_city_name)}&fact_street={change(p_fact_street)}&fact_house={change(p_fact_house)}&fact_flat={change(p_fact_flat)}&reg_region_name={change(p_reg_region_name)}&reg_city_name={change(p_reg_city_name)}&reg_house={change(p_reg_house)}&reg_flat={change(p_reg_flat)}&credit_sum={p_credit_sum}&credit_days={p_credit_days}&personal_data_agent={p_personal_data_agent}&application_received_date_by_client={p_application_received_date_by_client}&subid={p_subid}'
+            payload = f'campaigns=%5B{p_camp_id}%5D&user_notified={p_user_notified}&test_mode={p_test_mode}&first_name={p_fisr_name}&last_name={p_last_name}&middle_name={p_middle_name}&birth_date={p_birth_day}&mobile_phone={p_mob_phone}&occupation={p_occupaion}&work_salary={p_work_salary}&work_organization={p_work_organization}&work_phone={p_work_phone}&work_occupation={p_work_occupation}&work_region_name={p_work_region_name}&work_city_name={p_work_city_name}&work_street={p_work_street}&inn={p_inn}&work_house={p_work_house}&email={p_email}&passport={p_passport}&passport_date={p_passport_date}&passport_title={p_passport_title}&fact_region_name={p_fact_region_name}&fact_city_name={p_fact_city_name}&fact_street={p_fact_street}&fact_house={change(p_fact_house)}&fact_flat={p_fact_flat}&reg_region_name={p_reg_region_name}&reg_city_name={p_reg_city_name}&reg_house={p_reg_house}&reg_flat={p_reg_flat}&credit_sum={p_credit_sum}&credit_days={p_credit_days}&personal_data_agent={p_personal_data_agent}&application_received_date_by_client={p_application_received_date_by_client}&subid={p_subid}'
         elif p_type == 4:
             # -- містить довгий тип телефону v_mobile_phone
-            payload = f'campaigns=%5B{p_camp_id}%5D&user_notified={p_user_notified}&test_mode={p_test_mode}&first_name={change(p_fisr_name)}&last_name={change(p_last_name)}&middle_name={change(p_middle_name)}&birth_date={p_birth_day}&mobile_phone=%2B{p_full_mob_phone}&occupation={change(p_occupaion)}&work_salary={p_work_salary}&work_organization={change(p_work_organization)}&work_phone={p_work_phone}&work_occupation={change(p_work_occupation)}&work_region_name={change(p_work_region_name)}&work_city_name={change(p_work_city_name)}&work_street={change(p_work_street)}&inn={p_inn}&work_house={change(p_work_house)}&email={p_email}&passport={p_passport}&passport_date={p_passport_date}&passport_title={change(p_passport_title)}&fact_region_name={change(p_fact_region_name)}&fact_city_name={change(p_fact_city_name)}&fact_street={change(p_fact_street)}&fact_house={change(p_fact_house)}&fact_flat={change(p_fact_flat)}&reg_region_name={change(p_reg_region_name)}&reg_city_name={change(p_reg_city_name)}&reg_house={change(p_reg_house)}&reg_flat={change(p_reg_flat)}&credit_sum={p_credit_sum}&credit_days={p_credit_days}&personal_data_agent={p_personal_data_agent}&application_received_date_by_client={p_application_received_date_by_client}'
+            payload = f'campaigns=%5B{p_camp_id}%5D&user_notified={p_user_notified}&test_mode={p_test_mode}&first_name={p_fisr_name}&last_name={p_last_name}&middle_name={p_middle_name}&birth_date={p_birth_day}&mobile_phone=%2B{p_full_mob_phone}&occupation={p_occupaion}&work_salary={p_work_salary}&work_organization={p_work_organization}&work_phone={p_work_phone}&work_occupation={p_work_occupation}&work_region_name={p_work_region_name}&work_city_name={p_work_city_name}&work_street={p_work_street}&inn={p_inn}&work_house={p_work_house}&email={p_email}&passport={p_passport}&passport_date={p_passport_date}&passport_title={p_passport_title}&fact_region_name={p_fact_region_name}&fact_city_name={p_fact_city_name}&fact_street={p_fact_street}&fact_house={change(p_fact_house)}&fact_flat={p_fact_flat}&reg_region_name={p_reg_region_name}&reg_city_name={p_reg_city_name}&reg_house={p_reg_house}&reg_flat={p_reg_flat}&credit_sum={p_credit_sum}&credit_days={p_credit_days}&personal_data_agent={p_personal_data_agent}&application_received_date_by_client={p_application_received_date_by_client}'
 
         response = requests.request("POST", url=url, headers=headers, data=payload.encode('utf-8'), verify=False)
 
-        logger_admitad.info("URL: ", url)
-        logger_admitad.info("BODY: ", payload)
+
+        logger_admitad.info("URL: " + str(url))
+        logger_admitad.info("BODY: " + str(payload))
+
         logger_admitad.info("RESPONSE_STATUS: " + str(response))
         resp_data = json.loads(response.text)
         logger_admitad.info("RESPONSE_JSON :" + str(resp_data))
@@ -110,8 +113,8 @@ def get_status_admitad(p_partner_id, p_partner_uuid, p_profile_id, p_lead_id, p_
             'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
         }
 
-        logger_admitad.info("URL ST_UPDATE: " + url)
-        logger_admitad.info("TOKEN ST_UPDATE: " + token)
+        logger_admitad.info("URL ST_UPDATE: " + str(url))
+        logger_admitad.info("TOKEN ST_UPDATE: " + str(token))
         logger_admitad.info("HEADERS ST_UPDATE: " + str(headers))
 
         response = requests.request("GET", url=url, headers=headers, data=(), verify=False)
@@ -143,7 +146,9 @@ def get_status_admitad(p_partner_id, p_partner_uuid, p_profile_id, p_lead_id, p_
 
 def send_request_finline(p_partner_id, p_phone, p_inn, p_occupation, p_last_name, p_first_name,
                                      p_middle_name, p_agree_time, p_birthday, p_amount, p_aim, p_city, p_lead_id,
-                                     p_sample_id):
+                                     p_sample_id, p_lead):
+
+
     agree = 1
     p_url = "https://finx.com.ua"
     url_finline = "https://finline.ua/api/lead/create/4502/1"
@@ -151,21 +156,24 @@ def send_request_finline(p_partner_id, p_phone, p_inn, p_occupation, p_last_name
     data = {
         'phone': p_phone,
         'identCode': p_inn,
-        'employment': change(p_occupation),
-        'lastName': change(p_last_name),
-        'firstName': change(p_first_name),
-        'middleName': change(p_middle_name),
+        'employment': p_occupation,
+        'lastName': p_last_name,
+        'firstName': p_first_name,
+        'middleName': p_middle_name,
         'agree': agree,
-        'url': change(p_url),
+        'url': p_url,
         'agreeTime': p_agree_time,
         'birthDate': p_birthday,
         'amount': p_amount,
         'aim': p_aim,
-        'city': change(p_city)
+        'city': p_city
     }
 
-    logger_finline.info("URL: " + url_finline)
+    logger_finline.info("LEDA_ID: " + str(p_lead))
+    logger_finline.info("URL: " + str(url_finline))
     logger_finline.info("BODY: " + str(data))
+
+
     response = requests.request('POST', url_finline, data=data, verify=False)
 
     dat = json.loads(response.text)

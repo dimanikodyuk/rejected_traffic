@@ -76,6 +76,7 @@ if __name__ == "__main__":
                                          p_lead_id, p_type, p_token, p_sample_type, p_arg, p_profile_id)
 
                 lead_check = check_status_admitad(i['partner_id'], i['stream_id'])
+                lead_check = []
                 for j in lead_check:
                     print(j['partner_id'],  j['partner_uuid'], i['profile_id'],  i['client_id'], j['lead_id'], token, i['stream_id'])
                     get_status_admitad(j['partner_id'],  j['partner_uuid'], i['profile_id'],  j['lead_id'], token, i['stream_id'])
