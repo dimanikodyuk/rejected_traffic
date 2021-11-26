@@ -10,6 +10,8 @@ if __name__ == "__main__":
     try:
         for i in conf:
             if i["global_name"] == "Finline" and i["is_active"] == 1:
+                p_uid = i['uid']
+
                 leads = get_lead_list(i['partner_id'], i['stream_id'])
                 for row in leads:
                     p_phone = row['client_phone2']
@@ -28,7 +30,7 @@ if __name__ == "__main__":
                     p_lead_id = row['lead_id']
                     send_request_finline(i['partner_id'], p_phone, p_inn, p_occupation, p_last_name, p_first_name,
                                          p_middle_name, p_agree_time, p_birthday, p_amount, p_aim, p_city, p_loan_id,
-                                         p_sample_id, p_lead_id)
+                                         p_sample_id, p_lead_id, p_uid)
     except TypeError as err:
         logger_finline.error("[TypeError] finline.py: " + str(err))
     except ValueError as err:

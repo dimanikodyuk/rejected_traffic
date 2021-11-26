@@ -11,6 +11,8 @@ if __name__ == "__main__":
         for i in conf:
             if i["global_name"] == "Teleport" and i["is_active"] == 1:
                 leads = get_lead_list(i['partner_id'], i['stream_id'])
+                p_uid = i['uid']
+
                 for row in leads:
                     p_lead_id = row['lead_id']
                     p_first_name = row['first_name']
@@ -41,7 +43,8 @@ if __name__ == "__main__":
                                           p_subid, p_inn, p_pass_serial, p_pass_num, p_pass_dt, p_reg_region,
                                           p_reg_city, p_reg_street, p_reg_house, p_reg_apartment, p_fact_region,
                                           p_fact_city, p_fact_street, p_fact_house, p_fact_apartment, i['partner_id'],
-                                          p_sample_type)
+                                          p_sample_type, p_uid)
+
     except TypeError as err:
         logger_teleport.error("[TypeError] teleport.py: " + str(err))
     except ValueError as err:

@@ -146,12 +146,12 @@ def get_status_admitad(p_partner_id, p_partner_uuid, p_profile_id, p_lead_id, p_
 
 def send_request_finline(p_partner_id, p_phone, p_inn, p_occupation, p_last_name, p_first_name,
                                      p_middle_name, p_agree_time, p_birthday, p_amount, p_aim, p_city, p_lead_id,
-                                     p_sample_id, p_lead):
+                                     p_sample_id, p_lead, p_uid):
 
 
     agree = 1
     p_url = "https://finx.com.ua"
-    url_finline = "https://finline.ua/api/lead/create/4502/1"
+    url_finline = f"https://finline.ua/api/lead/create/{p_uid}/1"
 
     data = {
         'phone': p_phone,
@@ -197,7 +197,7 @@ def send_request_finline(p_partner_id, p_phone, p_inn, p_occupation, p_last_name
 def send_request_teleport(p_lead_id, p_first_name, p_last_name, p_middle_name, p_phone, p_birthday, p_subid,
                           p_inn, p_pass_serial, p_pass_num, p_pass_dt, p_reg_region, p_reg_city, p_reg_street,
                           p_reg_house, p_reg_apartment, p_fact_region, p_fact_city, p_fact_street, p_fact_house,
-                          p_fact_apartment, p_camp_id, p_sample_type):
+                          p_fact_apartment, p_camp_id, p_sample_type, p_uid):
 
     url_teleport = "https://gate.ua.tlpt.io/sendrequest"
 
@@ -205,7 +205,7 @@ def send_request_teleport(p_lead_id, p_first_name, p_last_name, p_middle_name, p
     logger_teleport.info("URL: " + str(url_teleport))
 
     data = {
-        'uid': 'TLWUCcRZex7mSf',
+        'uid': f'{p_uid}',
         'id': p_lead_id,
         'subid': p_subid,
         'last_name': p_last_name,
