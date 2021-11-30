@@ -15,7 +15,7 @@ if __name__ == "__main__":
 
                 for row in leads:
                     p_phone = row['client_phone2']
-                    p_tax_id = row['inn']
+                    p_inn = row['inn']
                     p_first_name = row['first_name']
                     p_last_name = row['last_name']
                     p_middle_name = row['middle_name']
@@ -23,10 +23,11 @@ if __name__ == "__main__":
                     p_uuid = row['lead_id']
                     p_sample_type = row['sample_type']
                     p_camp_id = i['partner_id']
+                    p_city = i['fact_city_name']
                     print(row)
 
-                    #send_request_finstorm(p_phone, p_tax_id, p_first_name, p_last_name, p_middle_name, p_email, p_uuid,
-                    #p_sample_type, p_camp_id)
+                    send_request_finstorm(p_phone, p_inn, p_first_name, p_last_name, p_middle_name, p_uuid,
+                                          p_city, p_sample_type, p_camp_id)
 
     except TypeError as err:
         logger_finline.error("[TypeError] finstorm.py: " + str(err))
