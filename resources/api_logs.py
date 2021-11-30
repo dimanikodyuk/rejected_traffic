@@ -49,6 +49,13 @@ dict_log_config = {
             'formatter': 'api_formatter',
         },
         'RotatingFileHandler5': {
+            'filename': f'{dir}/finstorm.log',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'maxBytes': 50000000,
+            'backupCount': 10,
+            'formatter': 'api_formatter',
+        },
+        'RotatingFileHandler6': {
             'filename': f'{dir}/test.log',
             'class': 'logging.handlers.RotatingFileHandler',
             'maxBytes': 50000000,
@@ -73,8 +80,12 @@ dict_log_config = {
             'handlers': ['RotatingFileHandler4'],
             'level': 'INFO'
         },
-        'test': {
+        'finstom': {
             'handlers': ['RotatingFileHandler5'],
+            'level': 'INFO'
+        },
+        'test': {
+            'handlers': ['RotatingFileHandler6'],
             'level': 'INFO'
         },
     },
@@ -90,4 +101,5 @@ logger_admitad = logging.getLogger('admitad')
 logger_finline = logging.getLogger('finline')
 logger_finme = logging.getLogger('finme')
 logger_teleport = logging.getLogger('teleport')
+logger_finstorm = logging.getLogger('finstorm')
 logger_test = logging.getLogger('test')

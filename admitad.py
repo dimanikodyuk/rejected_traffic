@@ -18,6 +18,7 @@ if __name__ == "__main__":
                     p_last_name = row['last_name']
                     p_middle_name = row['middle_name']
                     p_birth_day = row['birthday']
+                    p_birthday_novy = row['birthday_finme']
                     p_mobile_phone = row['client_phone2']
                     p_mob_phone = row['client_phone3']
                     p_full_mob_phone = row['client_phone']
@@ -73,7 +74,7 @@ if __name__ == "__main__":
                                          p_credit_days, p_id,
                                          p_credit_id, p_personal_data_agent, p_application_received_date_by_client, p_subid,
                                          p_email,
-                                         p_lead_id, p_type, p_token, p_sample_type, p_arg, p_profile_id)
+                                         p_lead_id, p_type, p_token, p_sample_type, p_arg, p_profile_id, p_birthday_novy)
 
                 lead_check = check_status_admitad(i['partner_id'], i['stream_id'])
                 lead_check = []

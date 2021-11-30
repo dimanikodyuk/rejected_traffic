@@ -1,7 +1,7 @@
 import requests
 import json
 import db.models as mod
-from resources.api_logs import logger_admitad, logger_finline, logger_teleport
+from resources.api_logs import logger_admitad, logger_finline, logger_teleport, logger_finstorm
 import urllib3
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
@@ -41,7 +41,7 @@ def send_request_admitad(p_camp_id, p_fisr_name, p_last_name, p_middle_name, p_b
                          p_fact_city_name, p_fact_street, p_fact_house, p_fact_flat, p_reg_region_name,
                          p_reg_city_name, p_reg_street, p_reg_house, p_reg_flat, p_credit_sum, p_credit_days, p_id,
                          p_credit_id, p_personal_data_agent, p_application_received_date_by_client, p_subid, p_email,
-                         p_lead_id, p_type, p_token, p_stream_id, p_arg, p_profile_id):
+                         p_lead_id, p_type, p_token, p_stream_id, p_arg, p_profile_id, p_birthday_novy):
     try:
 
         headers = {
@@ -65,10 +65,11 @@ def send_request_admitad(p_camp_id, p_fisr_name, p_last_name, p_middle_name, p_b
             payload = f'campaigns=%5B{p_camp_id}%5D&user_notified={p_user_notified}&test_mode={p_test_mode}&first_name={p_fisr_name}&last_name={p_last_name}&middle_name={p_middle_name}&birth_date={p_birth_day}&mobile_phone={p_mob_phone}&occupation={p_occupaion}&work_salary={p_work_salary}&work_organization={p_work_organization}&work_phone={p_work_phone}&work_occupation={p_work_occupation}&work_region_name={p_work_region_name}&work_city_name={p_work_city_name}&work_street={p_work_street}&inn={p_inn}&work_house={p_work_house}&email={p_email}&passport={p_passport}&passport_date={p_passport_date}&passport_title={p_passport_title}&fact_region_name={p_fact_region_name}&fact_city_name={p_fact_city_name}&fact_street={p_fact_street}&fact_house={change(p_fact_house)}&fact_flat={p_fact_flat}&reg_region_name={p_reg_region_name}&reg_city_name={p_reg_city_name}&reg_house={p_reg_house}&reg_flat={p_reg_flat}&credit_sum={p_credit_sum}&credit_days={p_credit_days}&personal_data_agent={p_personal_data_agent}&application_received_date_by_client={p_application_received_date_by_client}&subid={p_subid}'
         elif p_type == 4:
             # -- містить довгий тип телефону v_mobile_phone
-            payload = f'campaigns=%5B{p_camp_id}%5D&user_notified={p_user_notified}&test_mode={p_test_mode}&first_name={p_fisr_name}&last_name={p_last_name}&middle_name={p_middle_name}&birth_date={p_birth_day}&mobile_phone=%2B{p_full_mob_phone}&occupation={p_occupaion}&work_salary={p_work_salary}&work_organization={p_work_organization}&work_phone={p_work_phone}&work_occupation={p_work_occupation}&work_region_name={p_work_region_name}&work_city_name={p_work_city_name}&work_street={p_work_street}&inn={p_inn}&work_house={p_work_house}&email={p_email}&passport={p_passport}&passport_date={p_passport_date}&passport_title={p_passport_title}&fact_region_name={p_fact_region_name}&fact_city_name={p_fact_city_name}&fact_street={p_fact_street}&fact_house={change(p_fact_house)}&fact_flat={p_fact_flat}&reg_region_name={p_reg_region_name}&reg_city_name={p_reg_city_name}&reg_house={p_reg_house}&reg_flat={p_reg_flat}&credit_sum={p_credit_sum}&credit_days={p_credit_days}&personal_data_agent={p_personal_data_agent}&application_received_date_by_client={p_application_received_date_by_client}'
-
+            payload = f'campaigns=%5B{p_camp_id}%5D&user_notified={p_user_notified}&test_mode={p_test_mode}&first_name={p_fisr_name}&last_name={p_last_name}&middle_name={p_middle_name}&birth_date={p_birth_day}&mobile_phone=%2B{p_mob_phone}&occupation={p_occupaion}&work_salary={p_work_salary}&work_organization={p_work_organization}&work_phone={p_work_phone}&work_occupation={p_work_occupation}&work_region_name={p_work_region_name}&work_city_name={p_work_city_name}&work_street={p_work_street}&inn={p_inn}&work_house={p_work_house}&email={p_email}&passport={p_passport}&passport_date={p_passport_date}&passport_title={p_passport_title}&fact_region_name={p_fact_region_name}&fact_city_name={p_fact_city_name}&fact_street={p_fact_street}&fact_house={change(p_fact_house)}&fact_flat={p_fact_flat}&reg_region_name={p_reg_region_name}&reg_city_name={p_reg_city_name}&reg_house={p_reg_house}&reg_flat={p_reg_flat}&credit_sum={p_credit_sum}&credit_days={p_credit_days}&personal_data_agent={p_personal_data_agent}&application_received_date_by_client={p_application_received_date_by_client}&subid={p_birthday_novy}'
+        elif p_type == 5:
+            # -- містить короткий тип телефону v_mob_phone та поле v_subid - це дата народження в форматі 1992-10-10
+            payload = f'campaigns=%5B{p_camp_id}%5D&user_notified={p_user_notified}&test_mode={p_test_mode}&first_name={p_fisr_name}&last_name={p_last_name}&middle_name={p_middle_name}&birth_date={p_birth_day}&mobile_phone={p_mob_phone}&occupation={p_occupaion}&work_salary={p_work_salary}&work_organization={p_work_organization}&work_phone={p_work_phone}&work_occupation={p_work_occupation}&work_region_name={p_work_region_name}&work_city_name={p_work_city_name}&work_street={p_work_street}&inn={p_inn}&work_house={p_work_house}&email={p_email}&passport={p_passport}&passport_date={p_passport_date}&passport_title={p_passport_title}&fact_region_name={p_fact_region_name}&fact_city_name={p_fact_city_name}&fact_street={p_fact_street}&fact_house={change(p_fact_house)}&fact_flat={p_fact_flat}&reg_region_name={p_reg_region_name}&reg_city_name={p_reg_city_name}&reg_house={p_reg_house}&reg_flat={p_reg_flat}&credit_sum={p_credit_sum}&credit_days={p_credit_days}&personal_data_agent={p_personal_data_agent}&application_received_date_by_client={p_application_received_date_by_client}&subid={p_birthday_novy}'
         response = requests.request("POST", url=url, headers=headers, data=payload.encode('utf-8'), verify=False)
-
 
         logger_admitad.info("URL: " + str(url))
         logger_admitad.info("BODY: " + str(payload))
@@ -173,7 +174,6 @@ def send_request_finline(p_partner_id, p_phone, p_inn, p_occupation, p_last_name
     logger_finline.info("URL: " + str(url_finline))
     logger_finline.info("BODY: " + str(data))
 
-
     response = requests.request('POST', url_finline, data=data, verify=False)
 
     dat = json.loads(response.text)
@@ -241,3 +241,31 @@ def send_request_teleport(p_lead_id, p_first_name, p_last_name, p_middle_name, p
         mod.update_lead(p_lead_id, p_camp_id, 0, res, 0, 0, p_sample_type)
     else:
         mod.update_lead(p_lead_id, p_camp_id, 0, res, 1, 0, p_sample_type)
+
+
+def send_request_finstorm(p_phone, p_tax_id, p_first_name, p_last_name, p_middle_name, p_email, p_uuid, p_sample_type,
+                          p_camp_id):
+    url_finstorm = "https://traffic.finstorm.space/"
+    logger_finstorm.info("LEAD_ID: " + str(p_uuid))
+    logger_finstorm.info("URL: " + str(url_finstorm))
+
+    payload = {"phone": f"{p_phone}",
+               "tax_id": f"{p_tax_id}",
+               "first_name": f"{p_first_name}",
+               "last_name": f"{p_last_name}",
+               "middle_name": f"{p_middle_name}",
+               "email": f"{p_email}",
+               "uuid": f"{p_uuid}"
+    }
+
+    logger_finstorm.info("BODY: " + str(payload))
+
+    response = requests.request('POST', url=url_finstorm, data=payload, verify=False)
+    res = response.text
+
+    logger_teleport.info("RESPONSE: " + str(res))
+
+    # if res == "succeed":
+    #     mod.update_lead(p_uuid, p_camp_id, 0, res, 0, 0, p_sample_type)
+    # else:
+    #     mod.update_lead(p_uuid, p_camp_id, 0, res, 1, 0, p_sample_type)
