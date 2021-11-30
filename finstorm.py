@@ -25,8 +25,8 @@ if __name__ == "__main__":
                     p_camp_id = i['partner_id']
                     print(row)
 
-                    send_request_finstorm(p_phone, p_tax_id, p_first_name, p_last_name, p_middle_name, p_email, p_uuid,
-                    p_sample_type, p_camp_id)
+                    #send_request_finstorm(p_phone, p_tax_id, p_first_name, p_last_name, p_middle_name, p_email, p_uuid,
+                    #p_sample_type, p_camp_id)
 
     except TypeError as err:
         logger_finline.error("[TypeError] finstorm.py: " + str(err))
