@@ -52,7 +52,7 @@ def ins_partner_token(p_partner_id, p_partner_name, p_access_token, p_expires_in
 # Оновлення токена
 def upd_partner_token(p_partner_id, p_partner_name, p_access_token, p_expires_in, p_stream_id):
     upd = conn.cursor()
-    upd.execure('EXEC crm..ext_partner_upd_token %s, %s, %s, %s, %s;', (p_partner_id, p_partner_name, p_access_token, p_expires_in, p_stream_id))
+    upd.execute('EXEC crm..ext_partner_upd_token %s, %s, %s, %s, %s;', (p_partner_id, p_partner_name, p_access_token, p_expires_in, p_stream_id))
     conn.commit()
     upd.close()
 
