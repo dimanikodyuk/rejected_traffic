@@ -265,11 +265,11 @@ def send_request_finstorm(p_phone, p_inn, p_first_name, p_last_name, p_middle_na
 
         response = requests.request('POST', url=url_finstorm, data=payload, verify=False)
         #res = response.text
-        print("RESPONSE: " + str(response))
+        #print("RESPONSE: " + str(response))
         result = json.loads(response.text)
+        print(response)
         logger_finstorm.info("RESPONSE JSON: " + str(response).replace('\'','`'))
         if result['status']:
-
             status = 'True'
             mod.update_lead(p_uuid, p_camp_id, 0, status, 0, 0, p_sample_type)
         else:
