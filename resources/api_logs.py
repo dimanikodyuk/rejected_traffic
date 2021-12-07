@@ -35,7 +35,7 @@ dict_log_config = {
             'formatter': 'api_formatter',
         },
         'RotatingFileHandler3': {
-            'filename': f'{dir}/finme.log',
+            'filename': f'{dir}/finstorm.log',
             'class': 'logging.handlers.RotatingFileHandler',
             'maxBytes': 50000000,
             'backupCount': 10,
@@ -49,13 +49,6 @@ dict_log_config = {
             'formatter': 'api_formatter',
         },
         'RotatingFileHandler5': {
-            'filename': f'{dir}/finstorm.log',
-            'class': 'logging.handlers.RotatingFileHandler',
-            'maxBytes': 50000000,
-            'backupCount': 10,
-            'formatter': 'api_formatter',
-        },
-        'RotatingFileHandler6': {
             'filename': f'{dir}/test.log',
             'class': 'logging.handlers.RotatingFileHandler',
             'maxBytes': 50000000,
@@ -72,7 +65,7 @@ dict_log_config = {
             'handlers': ['RotatingFileHandler2'],
             'level': 'INFO'
         },
-        'finme': {
+        'finstorm': {
             'handlers': ['RotatingFileHandler3'],
             'level': 'INFO'
         },
@@ -80,12 +73,8 @@ dict_log_config = {
             'handlers': ['RotatingFileHandler4'],
             'level': 'INFO'
         },
-        'finstom': {
-            'handlers': ['RotatingFileHandler5'],
-            'level': 'INFO'
-        },
         'test': {
-            'handlers': ['RotatingFileHandler6'],
+            'handlers': ['RotatingFileHandler5'],
             'level': 'INFO'
         },
     },
