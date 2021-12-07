@@ -263,7 +263,7 @@ def send_request_finstorm(p_phone, p_inn, p_first_name, p_last_name, p_middle_na
 
         logger_finstorm.info("BODY: " + str(payload))
 
-        response = requests.request('POST', url=url_finstorm, data=payload, verify=False)
+        response = requests.request('POST', url=url_finstorm, data=payload, verify=False, timeout=0.1)
         #res = response.text
         print(response.status_code)
         #print("RESPONSE: " + str(response))
