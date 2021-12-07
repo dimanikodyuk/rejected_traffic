@@ -274,9 +274,9 @@ def send_request_finstorm(p_phone, p_inn, p_first_name, p_last_name, p_middle_na
             status = 'False'
             mod.update_lead(p_uuid, p_camp_id, 0, status, 1, 0, p_sample_type)
     except TypeError as err:
-        print("[TypeError] api.py - send_request_finstorm: " + str(err))
+        logger_finstorm.error("[TypeError] api.py - send_request_finstorm: " + str(err))
     except ValueError as err:
-        print("[ValueError] api.py - send_request_finstorm: " + str(err))
+        logger_finstorm.error("[ValueError] api.py - send_request_finstorm: " + str(err))
     except Exception as err:
-        print("[Exception] api.py - send_request_finstorm: " + str(err))
+        logger_finstorm.error("[Exception] api.py - send_request_finstorm: " + str(err))
 
