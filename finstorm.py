@@ -32,8 +32,8 @@ if __name__ == "__main__":
                                           p_city, p_sample_type, p_camp_id)
 
     except TypeError as err:
-        logger_finline.error("[TypeError] finstorm.py: " + str(err))
+        logger_finstorm.error("[TypeError] finstorm.py: " + str(err))
     except ValueError as err:
-        logger_finline.error("[ValueError] finstorm.py: " + str(err))
+        logger_finstorm.error("[ValueError] finstorm.py: " + str(err))
     except Exception as err:
-        logger_finline.error("[Exception] finstorm.py: " + str(err))
+        logger_finstorm.error("[Exception] finstorm.py: " + str(err))

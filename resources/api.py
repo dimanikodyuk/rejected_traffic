@@ -245,30 +245,38 @@ def send_request_teleport(p_lead_id, p_first_name, p_last_name, p_middle_name, p
 
 def send_request_finstorm(p_phone, p_inn, p_first_name, p_last_name, p_middle_name, p_uuid, p_city,
                           p_sample_type, p_camp_id):
-    url_finstorm = "https://api.finbroker.biz.ua/api/upload/ohjouYNIufg)vm__werf"
-    logger_finstorm.info("LEAD_ID: " + str(p_uuid))
-    logger_finstorm.info("URL: " + str(url_finstorm))
+    try:
+        url_finstorm = "https://api.finbroker.biz.ua/api/upload/ohjouYNIufg)vm__werf"
+        logger_finstorm.info("LEAD_ID: " + str(p_uuid))
+        logger_finstorm.info("URL: " + str(url_finstorm))
 
-    payload = {"phone": f"{p_phone}",
-               "city": f"{p_city}",
-               "first_name": f"{p_first_name}",
-               "last_name": f"{p_last_name}",
-               "middle_name": f"{p_middle_name}",
-               "inn": f"{p_inn}",
-               "uuid": f"{p_uuid}"
-    }
+        payload = {"phone": f"{p_phone}",
+                   "city": f"{p_city}",
+                   "first_name": f"{p_first_name}",
+                   "last_name": f"{p_last_name}",
+                   "middle_name": f"{p_middle_name}",
+                   "inn": f"{p_inn}",
+                   "uuid": f"{p_uuid}"
+        }
 
-    print(payload)
+        print(payload)
 
-    logger_finstorm.info("BODY: " + str(payload))
+        logger_finstorm.info("BODY: " + str(payload))
 
-    response = requests.request('POST', url=url_finstorm, data=payload, verify=False)
-    #res = response.text
-    result = json.loads(response.text)
-    logger_finstorm.info("RESPONSE JSON: " + str(result))
-    if result['status']:
-        status = 'True'
-        mod.update_lead(p_uuid, p_camp_id, 0, status, 0, 0, p_sample_type)
-    else:
-        status = 'False'
-        mod.update_lead(p_uuid, p_camp_id, 0, status, 1, 0, p_sample_type)
+        response = requests.request('POST', url=url_finstorm, data=payload, verify=False)
+        #res = response.text
+        result = json.loads(response.text)
+        logger_finstorm.info("RESPONSE JSON: " + str(result))
+        if result['status']:
+            status = 'True'
+            mod.update_lead(p_uuid, p_camp_id, 0, status, 0, 0, p_sample_type)
+        else:
+            status = 'False'
+            mod.update_lead(p_uuid, p_camp_id, 0, status, 1, 0, p_sample_type)
+    except TypeError as err:
+        print("[TypeError] api.py - send_request_finstorm: " + str(err))
+    except ValueError as err:
+        print("[ValueError] api.py - send_request_finstorm: " + str(err))
+    except Exception as err:
+        print("[Exception] api.py - send_request_finstorm: " + str(err))
+
