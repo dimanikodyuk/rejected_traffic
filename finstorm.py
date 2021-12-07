@@ -25,7 +25,7 @@ if __name__ == "__main__":
                     p_uuid = row['lead_id']
                     p_sample_type = row['sample_type']
                     p_camp_id = i['partner_id']
-                    p_city = i['fact_city_name']
+                    p_city = row['fact_city_name']
                     print(row)
 
                     send_request_finstorm(p_phone, p_inn, p_first_name, p_last_name, p_middle_name, p_uuid,
