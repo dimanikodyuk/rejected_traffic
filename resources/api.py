@@ -3,6 +3,7 @@ import json
 import db.models as mod
 from resources.api_logs import logger_admitad, logger_finline, logger_teleport, logger_finstorm
 import urllib3
+import time
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 
@@ -259,8 +260,8 @@ def send_request_finstorm(p_phone, p_inn, p_first_name, p_last_name, p_middle_na
                    "uuid": f"{p_uuid}"
         }
 
+        time.sleep(0.2)
         print(payload)
-
         logger_finstorm.info("BODY: " + str(payload))
         response = requests.request('POST', url=url_finstorm, data=payload, verify=False)
         #res = response.text
