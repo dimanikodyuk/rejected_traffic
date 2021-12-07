@@ -265,7 +265,9 @@ def send_request_finstorm(p_phone, p_inn, p_first_name, p_last_name, p_middle_na
 
         response = requests.request('POST', url=url_finstorm, data=payload, verify=False)
         #res = response.text
+        print("RESPONSE: " + str(response))
         result = json.loads(response.text)
+        print("RESULT: " + str(result))
         logger_finstorm.info("RESPONSE JSON: " + str(result).replace('\'','`'))
         print("RESPONSE JSON: " + str(result))
         if result['status']:
