@@ -262,7 +262,7 @@ def send_request_finstorm(p_phone, p_inn, p_first_name, p_last_name, p_middle_na
                    "uuid": f"{p_uuid}"
         }
 
-        time.sleep(0.5)
+        time.sleep(1)
         print(payload)
         logger_finstorm.info("BODY: " + str(payload))
         response = requests.request('POST', url=url_finstorm, data=payload, verify=False)
