@@ -267,9 +267,7 @@ def send_request_finstorm(p_phone, p_inn, p_first_name, p_last_name, p_middle_na
         #res = response.text
         print("RESPONSE: " + str(response))
         result = json.loads(response.text)
-        print("RESULT: " + str(result))
-        logger_finstorm.info("RESPONSE JSON: " + str(result).replace('\'','`'))
-        print("RESPONSE JSON: " + str(result))
+        logger_finstorm.info("RESPONSE JSON: " + str(response).replace('\'','`'))
         if result['status']:
 
             status = 'True'
