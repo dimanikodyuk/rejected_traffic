@@ -31,9 +31,12 @@ if __name__ == "__main__":
                     send_request_finline(i['partner_id'], p_phone, p_inn, p_occupation, p_last_name, p_first_name,
                                          p_middle_name, p_agree_time, p_birthday, p_amount, p_aim, p_city, p_loan_id,
                                          p_sample_id, p_lead_id, p_uid)
+
     except TypeError as err:
         logger_finline.error("[TypeError] finline.py: " + str(err))
     except ValueError as err:
         logger_finline.error("[ValueError] finline.py: " + str(err))
+    except KeyError as err:
+        logger_finline.error("[KeyError] finline.py: " + str(err))
     except Exception as err:
         logger_finline.error("[Exception] finline.py: " + str(err))

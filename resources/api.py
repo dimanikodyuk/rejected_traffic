@@ -171,7 +171,9 @@ def send_request_finline(p_partner_id, p_phone, p_inn, p_occupation, p_last_name
         'city': p_city
     }
 
-    logger_finline.info("LEDA_ID: " + str(p_lead))
+    print(data)
+
+    logger_finline.info("LEAD_ID: " + str(p_lead))
     logger_finline.info("URL: " + str(url_finline))
     logger_finline.info("BODY: " + str(data))
 
