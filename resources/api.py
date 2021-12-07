@@ -262,20 +262,20 @@ def send_request_finstorm(p_phone, p_inn, p_first_name, p_last_name, p_middle_na
         print(payload)
 
         logger_finstorm.info("BODY: " + str(payload))
-
-        response = requests.request('POST', url=url_finstorm, data=payload, verify=False, timeout=0.1)
+        response = requests.request('POST', url=url_finstorm, data=payload, verify=False)
         #res = response.text
-        print(response.status_code)
-        #print("RESPONSE: " + str(response))
-        result = json.loads(response.text)
-        print(response)
-        logger_finstorm.info("RESPONSE JSON: " + str(response).replace('\'','`'))
-        if result['status']:
-            status = 'True'
-            mod.update_lead(p_uuid, p_camp_id, 0, status, 0, 0, p_sample_type)
-        else:
-            status = 'False'
-            mod.update_lead(p_uuid, p_camp_id, 0, status, 1, 0, p_sample_type)
+        status = response.status_code
+        if status == 200:
+            print("RESPONSE: " + str(response))
+            result = json.loads(response.text)
+            #print(response)
+            logger_finstorm.info("RESPONSE JSON: " + str(response).replace('\'', '`'))
+            if result['status']:
+                status = 'True'
+                mod.update_lead(p_uuid, p_camp_id, 0, status, 0, 0, p_sample_type)
+            else:
+                status = 'False'
+                mod.update_lead(p_uuid, p_camp_id, 0, status, 1, 0, p_sample_type)
     except TypeError as err:
         logger_finstorm.error("[TypeError] api.py - send_request_finstorm: " + str(err))
     except ValueError as err:
