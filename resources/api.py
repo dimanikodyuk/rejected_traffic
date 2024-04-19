@@ -249,7 +249,8 @@ def send_request_teleport(p_lead_id, p_first_name, p_last_name, p_middle_name, p
 def send_request_finstorm(p_phone, p_inn, p_first_name, p_last_name, p_middle_name, p_uuid, p_city,
                           p_sample_type, p_camp_id):
     try:
-        url_finstorm = "https://api.finbroker.biz.ua/api/upload/ohjouYNIufg)vm__werf"
+        url_finstorm = "https://p2p.finhub.ua/api/upload/ohjouYNIufg)vm__werf"   #"https://api.finbroker.biz.ua/api/upload/ohjouYNIufg)vm__werf"
+	
         logger_finstorm.info("LEAD_ID: " + str(p_uuid))
         logger_finstorm.info("URL: " + str(url_finstorm))
 

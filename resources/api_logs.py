@@ -4,11 +4,7 @@ from logging.handlers import RotatingFileHandler
 from sys import platform
 import os
 
-print(platform)
-if platform == "win32":
-    dir = os.path.abspath(os.curdir) + '\logs'
-else:
-    dir = os.path.abspath(os.curdir).replace('\\', '/') + '/logs'
+dir = '/root/rej_traffic/rejected_traffic/logs'
 
 log_file_handler = RotatingFileHandler(f'{dir}/api.log', maxBytes=10485760,
                                        backupCount=10)
