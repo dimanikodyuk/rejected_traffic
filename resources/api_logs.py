@@ -4,7 +4,10 @@ from logging.handlers import RotatingFileHandler
 from sys import platform
 import os
 
-dir = '/root/rej_traffic/rejected_traffic/logs'
+if os.name == 'nt':
+    dir = 'C:/GIT/rejected_traffic'
+else:
+    dir = '/root/rej_traffic/rejected_traffic/logs'
 
 log_file_handler = RotatingFileHandler(f'{dir}/api.log', maxBytes=10485760,
                                        backupCount=10)
@@ -51,6 +54,13 @@ dict_log_config = {
             'backupCount': 10,
             'formatter': 'api_formatter',
         },
+        'RotatingFileHandler6': {
+            'filename': f'{dir}/ecpc.log',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'maxBytes': 50000000,
+            'backupCount': 10,
+            'formatter': 'api_formatter',
+        },
     },
     'loggers': {
         'admitad': {
@@ -73,6 +83,10 @@ dict_log_config = {
             'handlers': ['RotatingFileHandler5'],
             'level': 'INFO'
         },
+        'ecpc': {
+            'handlers': ['RotatingFileHandler6'],
+            'level': 'INFO'
+        },
     },
     'formatters': {
         'api_formatter': {
@@ -88,3 +102,4 @@ logger_finme = logging.getLogger('finme')
 logger_teleport = logging.getLogger('teleport')
 logger_finstorm = logging.getLogger('finstorm')
 logger_test = logging.getLogger('test')
+logger_ecpc = logging.getLogger('ecpc')

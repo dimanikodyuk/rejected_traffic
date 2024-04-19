@@ -4,7 +4,7 @@ from resources.api import generate_token_admitad
 
 
 conn = pymssql.connect(host=host_delta, user=user_delta, password=password_delta, database=database_delta, as_dict=True,
-                       autocommit=False)
+                       autocommit=False, charset='cp1251')
 
 
 # Отримання конфігурації з БД

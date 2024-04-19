@@ -1,7 +1,7 @@
 import requests
 import json
 import db.models as mod
-from resources.api_logs import logger_admitad, logger_finline, logger_teleport, logger_finstorm
+from resources.api_logs import logger_admitad, logger_finline, logger_teleport, logger_finstorm, logger_ecpc
 import urllib3
 import time
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
@@ -288,3 +288,47 @@ def send_request_finstorm(p_phone, p_inn, p_first_name, p_last_name, p_middle_na
     except Exception as err:
         logger_finstorm.error("[Exception] api.py - send_request_finstorm: " + str(err))
 
+
+def send_request_ecpc(p_token, p_trigger_id, p_first_name, p_last_name, p_middle_name, p_phone, p_inn, p_camp_id, p_sample_type):
+    try:
+        url_ecpc = "https://zaimer.com.ua/api/create_user/"
+
+        logger_ecpc.info("LEAD_ID: " + str(p_trigger_id))
+        logger_ecpc.info("URL: " + str(url_ecpc))
+
+        payload = {"access_token": f"{p_token}",
+                   "trigger_id": f"{p_trigger_id}",
+                   "first_name": f"{p_first_name}",
+                   "last_name": f"{p_last_name}",
+                   "middle_name": f"{p_middle_name}",
+                   "phone": f"{p_phone}",
+                   "inn": f"{p_inn}"
+                   }
+
+        #time.sleep(1)
+        print(payload)
+        logger_ecpc.info("BODY: " + str(payload))
+        response = requests.request('POST', url=url_ecpc, data=payload, verify=False)
+        # res = response.text
+        status = response.status_code
+        print("RESPONSE: " + str(response) + "\n" + str(status))
+
+        if status == 200:
+            result = json.loads(response.text)
+            # print(response)
+            logger_ecpc.info("RESPONSE JSON: " + str(response).replace('\'', '`'))
+            if result['status']:
+                status = 'Success'
+                mod.update_lead(p_trigger_id, p_camp_id, 0, status, 0, 0, p_sample_type)
+            else:
+                status = 'Error'
+                mod.update_lead(p_trigger_id, p_camp_id, 0, status, 1, 0, p_sample_type)
+        else:
+            logger_ecpc.info("RESPONSE JSON ERROR: " + str(response).replace('\'', '`'))
+
+    except TypeError as err:
+        logger_ecpc.error("[TypeError] api.py - send_request_ecpc: " + str(err))
+    except ValueError as err:
+        logger_ecpc.error("[ValueError] api.py - send_request_ecpc: " + str(err))
+    except Exception as err:
+        logger_ecpc.error("[Exception] api.py - send_request_ecpc: " + str(err))
