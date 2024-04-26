@@ -299,7 +299,7 @@ def send_request_ecpc(p_token, p_trigger_id, p_first_name, p_last_name, p_middle
         payload = {"access_token": f"{p_token}",
                    "trigger_id": f"{p_trigger_id}",
                    "first_name": f"{p_first_name}",
-                   "last_name": f"{p_last_name}",
+                   "second_name": f"{p_last_name}",
                    "middle_name": f"{p_middle_name}",
                    "phone": f"{p_phone}",
                    "inn": f"{p_inn}"
