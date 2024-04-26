@@ -17,7 +17,7 @@ if __name__ == "__main__":
                 token = get_partner_token(i['partner_dict_id'], i['global_name'], i['stream_id'], i['base_header'], i['client_id'])
                 leads = get_lead_list(i['partner_id'], i['stream_id'])
                 for row in leads:
-                    print(row)
+                    #print(row)
 
                     p_lead_id = row['lead_id']
                     p_first_name = row['first_name']
