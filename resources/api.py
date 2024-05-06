@@ -82,7 +82,7 @@ def send_request_admitad(p_camp_id, p_fisr_name, p_last_name, p_middle_name, p_b
         if response.json()['id'] is None:
             logger_admitad.warning("ID від партнера не отримано")
             logger_admitad.warning("ERROR_MESSAGE: " + str(response.json()['errors'][0]['message']))
-            mod.update_lead(p_lead_id, p_camp_id, 0, 'error', 1, 0, p_stream_id)
+            mod.update_lead(p_lead_id, p_camp_id, 0, 'error', 1, 0, p_stream_id, None)
         else:
             v_id = resp_data['id']
             v_campaign = resp_data['responses'][0]['campaign_id']
@@ -91,10 +91,10 @@ def send_request_admitad(p_camp_id, p_fisr_name, p_last_name, p_middle_name, p_b
             if not resp_data['errors']:
                 v_errors = resp_data['errors']
                 logger_admitad.error("LEAD_ID: " + str(p_lead_id) + " - " + str(v_errors))
-                mod.update_lead(p_lead_id, p_camp_id, v_id, v_status, 0, 0, p_stream_id)
+                mod.update_lead(p_lead_id, p_camp_id, v_id, v_status, 0, 0, p_stream_id, None)
             else:
                 v_errors = resp_data['errors']
-                mod.update_lead(p_lead_id, p_camp_id, v_id, v_status, 1, 0, p_stream_id)
+                mod.update_lead(p_lead_id, p_camp_id, v_id, v_status, 1, 0, p_stream_id, None)
                 logger_admitad.error("LEAD_ID: " + str(p_lead_id) + " - " + str(v_errors))
     except ValueError as err:
         logger_admitad.error("[ValueError] send_request_admitad: " + str(err))
@@ -189,12 +189,12 @@ def send_request_finline(p_partner_id, p_phone, p_inn, p_occupation, p_last_name
 
     if result_check:
         if not declined_check:
-            mod.update_lead(p_lead_id, p_partner_id, partner_lead_id, 'True', 0, 0, p_sample_id)
+            mod.update_lead(p_lead_id, p_partner_id, partner_lead_id, 'True', 0, 0, p_sample_id, None)
 
         elif declined_check:
-            mod.update_lead(p_lead_id, p_partner_id, partner_lead_id, 'False', 1, 1, p_sample_id)
+            mod.update_lead(p_lead_id, p_partner_id, partner_lead_id, 'False', 1, 1, p_sample_id, None)
     else:
-        mod.update_lead(p_lead_id, p_partner_id, partner_lead_id, 'False', 1, 0, p_sample_id)
+        mod.update_lead(p_lead_id, p_partner_id, partner_lead_id, 'False', 1, 0, p_sample_id, None)
 
 
 def send_request_teleport(p_lead_id, p_first_name, p_last_name, p_middle_name, p_phone, p_birthday, p_subid,
@@ -241,9 +241,9 @@ def send_request_teleport(p_lead_id, p_first_name, p_last_name, p_middle_name, p
 
     logger_teleport.info("RESPONSE: " + str(res))
     if res == "succeed":
-        mod.update_lead(p_lead_id, p_camp_id, 0, res, 0, 0, p_sample_type)
+        mod.update_lead(p_lead_id, p_camp_id, 0, res, 0, 0, p_sample_type, None)
     else:
-        mod.update_lead(p_lead_id, p_camp_id, 0, res, 1, 0, p_sample_type)
+        mod.update_lead(p_lead_id, p_camp_id, 0, res, 1, 0, p_sample_type, None)
 
 
 def send_request_finstorm(p_phone, p_inn, p_first_name, p_last_name, p_middle_name, p_uuid, p_city,
@@ -277,10 +277,10 @@ def send_request_finstorm(p_phone, p_inn, p_first_name, p_last_name, p_middle_na
             logger_finstorm.info("RESPONSE JSON: " + str(response).replace('\'', '`'))
             if result['status']:
                 status = 'True'
-                mod.update_lead(p_uuid, p_camp_id, 0, status, 0, 0, p_sample_type)
+                mod.update_lead(p_uuid, p_camp_id, 0, status, 0, 0, p_sample_type, None)
             else:
                 status = 'False'
-                mod.update_lead(p_uuid, p_camp_id, 0, status, 1, 0, p_sample_type)
+                mod.update_lead(p_uuid, p_camp_id, 0, status, 1, 0, p_sample_type, None)
     except TypeError as err:
         logger_finstorm.error("[TypeError] api.py - send_request_finstorm: " + str(err))
     except ValueError as err:
@@ -297,7 +297,7 @@ def send_request_ecpc(p_token, p_trigger_id, p_first_name, p_last_name, p_middle
         logger_ecpc.info("URL: " + str(url_ecpc))
 
         payload = {"access_token": f"{p_token}",
-                   "trigger_id": f"{p_trigger_id}",
+                   #"trigger_id": f"{p_trigger_id}", # відключено за проханням партнера
                    "first_name": f"{p_first_name}",
                    "second_name": f"{p_last_name}",
                    "middle_name": f"{p_middle_name}",
@@ -309,20 +309,21 @@ def send_request_ecpc(p_token, p_trigger_id, p_first_name, p_last_name, p_middle
         print(payload)
         logger_ecpc.info("BODY: " + str(payload))
         response = requests.request('POST', url=url_ecpc, data=payload, verify=False)
-        # res = response.text
+        res = response.text
         status = response.status_code
         print("RESPONSE: " + str(response) + "\n" + str(status))
-
+        logger_ecpc.info(f"RESPONSE FULL: {str(res).replace('\'', '`')}")
         if status == 200:
             result = json.loads(response.text)
             # print(response)
             logger_ecpc.info("RESPONSE JSON: " + str(response).replace('\'', '`'))
             if result['status']:
                 status = 'Success'
-                mod.update_lead(p_trigger_id, p_camp_id, 0, status, 0, 0, p_sample_type)
+                partner_aliase_id = result['aliase']
+                mod.update_lead(p_trigger_id, p_camp_id, 0, status, 0, 0, p_sample_type, partner_aliase_id)
             else:
                 status = 'Error'
-                mod.update_lead(p_trigger_id, p_camp_id, 0, status, 1, 0, p_sample_type)
+                mod.update_lead(p_trigger_id, p_camp_id, 0, status, 1, 0, p_sample_type, None)
         else:
             logger_ecpc.info("RESPONSE JSON ERROR: " + str(response).replace('\'', '`'))
 

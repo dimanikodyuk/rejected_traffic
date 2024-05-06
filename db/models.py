@@ -77,13 +77,13 @@ def get_lead_list(p_partner_id, p_stream_id):
 
 
 # Оновлення ліда в таблиці
-def update_lead(p_lead_id, p_partner_id, p_partner_uuid, p_lead_status, p_partner_error, p_dublicate, p_stream_id):
+def update_lead(p_lead_id, p_partner_id, p_partner_uuid, p_lead_status, p_partner_error, p_dublicate, p_stream_id, p_aliase_id):
     try:
         upd = conn.cursor()
-        upd.execute("EXEC crm..ext_partner_upd_lead_table %s, %s, %s, %s, %s, %s, %s;",
-                (p_lead_id, p_partner_uuid, p_lead_status, p_partner_error, p_dublicate, p_partner_id, p_stream_id))
+        upd.execute("EXEC crm..ext_partner_upd_lead_table %s, %s, %s, %s, %s, %s, %s, %s;",
+                (p_lead_id, p_partner_uuid, p_lead_status, p_partner_error, p_dublicate, p_partner_id, p_stream_id, p_aliase_id))
         print("EXEC crm..ext_partner_upd_lead_table %s, %s, %s, %s, %s, %s, %s;",
-                (p_lead_id, p_partner_uuid, p_lead_status, p_partner_error, p_dublicate, p_partner_id, p_stream_id))
+                (p_lead_id, p_partner_uuid, p_lead_status, p_partner_error, p_dublicate, p_partner_id, p_stream_id, p_aliase_id))
         conn.commit()
         upd.close()
     except TypeError as err:
