@@ -312,7 +312,7 @@ def send_request_ecpc(p_token, p_trigger_id, p_first_name, p_last_name, p_middle
         res = response.text
         status = response.status_code
         print("RESPONSE: " + str(response) + "\n" + str(status))
-        logger_ecpc.info(f"RESPONSE FULL: {str(res).replace('\'', '`')}")
+        logger_ecpc.info("RESPONSE FULL: " + str(res).replace('\'', '`'))
         if status == 200:
             result = json.loads(response.text)
             # print(response)
