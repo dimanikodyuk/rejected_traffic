@@ -1,7 +1,7 @@
 import requests
 import json
 import db.models as mod
-from resources.api_logs import logger_admitad, logger_finline, logger_teleport, logger_finstorm, logger_ecpc
+from resources.api_logs import logger_admitad, logger_finline, logger_teleport, logger_finstorm, logger_ecpc, logger_credit_yes
 import urllib3
 import time
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
@@ -288,7 +288,6 @@ def send_request_finstorm(p_phone, p_inn, p_first_name, p_last_name, p_middle_na
     except Exception as err:
         logger_finstorm.error("[Exception] api.py - send_request_finstorm: " + str(err))
 
-
 def send_request_ecpc(p_token, p_trigger_id, p_first_name, p_last_name, p_middle_name, p_phone, p_inn, p_camp_id, p_sample_type):
     try:
         url_ecpc = "https://zaimer.com.ua/api/create_user/"
@@ -333,3 +332,69 @@ def send_request_ecpc(p_token, p_trigger_id, p_first_name, p_last_name, p_middle
         logger_ecpc.error("[ValueError] api.py - send_request_ecpc: " + str(err))
     except Exception as err:
         logger_ecpc.error("[Exception] api.py - send_request_ecpc: " + str(err))
+
+
+
+def send_request_credit_yes(p_partner_id, p_sample_type, p_token, p_product, p_utm_medium, p_utm_campaign, p_utm_term,
+                            p_user_ip, p_user_agent, p_custom_identifier, p_name, p_second_name, p_surname,
+                            p_phone, p_pers_id, p_loan_amount, p_loan_period, p_short_consent):
+    try:
+
+        url_credit_yes = "https://dev.credityes.com.ua/registrationExternal"
+
+        logger_credit_yes.info("LEAD_ID: " + str(p_custom_identifier))
+        logger_credit_yes.info("URL: " + str(url_credit_yes))
+
+        payload = json.dumps({
+              "apiKey": f"{p_token}",
+              "product": f"{p_product}",
+              "customIdentifier": f"{p_custom_identifier}",
+              "utm_medium": f"{p_utm_medium}",
+              "utm_campaign": f"{p_utm_campaign}",
+              "utm_term": f"{p_utm_term}",
+              "userIP": f"{p_user_ip}",
+              "userAgent": f"{p_user_agent}",
+              "fields": {
+                "name": f"{p_name}",
+                "secondName": f"{p_second_name}",
+                "surname": f"{p_surname}",
+                "email": "test@gmail.com",
+                "phone": f"{p_phone}",
+                "persId": p_pers_id,
+                "loanAmount": p_loan_amount,
+                "loanPeriod": p_loan_period,
+                "shortConsent": p_short_consent
+              }
+            })
+        # time.sleep(1)
+        print(payload)
+        logger_credit_yes.info("BODY: " + str(payload))
+
+        response = requests.request('POST', url=url_credit_yes, data=payload, verify=False)
+
+        res = response.text
+
+        status = response.status_code
+        print("RESPONSE: " + str(response) + "\n" + str(status))
+
+        logger_credit_yes.info("RESPONSE FULL: " + str(res).replace('\'', '`'))
+
+        if status == 200:
+            result = json.loads(response.text)
+            # print(response)
+            logger_credit_yes.info("RESPONSE JSON: " + str(response).replace('\'', '`'))
+            if result['status']:
+                status = 'Success'
+                mod.update_lead(p_custom_identifier, p_partner_id, 0, status, 0, 0, p_sample_type, None)
+            else:
+                status = 'Error'
+                mod.update_lead(p_custom_identifier, p_partner_id, 0, status, 1, 0, p_sample_type, None)
+        else:
+            logger_credit_yes.info("RESPONSE JSON ERROR: " + str(response).replace('\'', '`'))
+
+    except TypeError as err:
+        logger_credit_yes.error("[TypeError] api.py - send_request_credit_yes: " + str(err))
+    except ValueError as err:
+        logger_credit_yes.error("[ValueError] api.py - send_request_credit_yes: " + str(err))
+    except Exception as err:
+        logger_credit_yes.error("[Exception] api.py - send_request_credit_yes: " + str(err))

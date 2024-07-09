@@ -61,6 +61,13 @@ dict_log_config = {
             'backupCount': 10,
             'formatter': 'api_formatter',
         },
+        'RotatingFileHandler7': {
+            'filename': f'{dir}/credit_yes.log',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'maxBytes': 50000000,
+            'backupCount': 10,
+            'formatter': 'api_formatter',
+        },
     },
     'loggers': {
         'admitad': {
@@ -87,6 +94,10 @@ dict_log_config = {
             'handlers': ['RotatingFileHandler6'],
             'level': 'INFO'
         },
+        'credit_yes': {
+            'handlers': ['RotatingFileHandler7'],
+            'level': 'INFO'
+        },
     },
     'formatters': {
         'api_formatter': {
@@ -103,3 +114,4 @@ logger_teleport = logging.getLogger('teleport')
 logger_finstorm = logging.getLogger('finstorm')
 logger_test = logging.getLogger('test')
 logger_ecpc = logging.getLogger('ecpc')
+logger_credit_yes = logging.getLogger('credit_yes')
