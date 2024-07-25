@@ -19,7 +19,11 @@ if __name__ == "__main__":
 
                     p_partner_id = row['partner_id']
                     p_sample_type = row['sample_type']
-                    p_product = 'e4acc42b4b1d33058a52601922daff95'
+                    #test_product
+                    #p_product = 'e4acc42b4b1d33058a52601922daff95'
+
+                    #prod_product
+                    p_product = '5767af28e3a2a1e3849d3a6d9553843c'
                     p_utm_medium = ''
                     p_utm_campaign = ''
                     p_utm_term = ''
