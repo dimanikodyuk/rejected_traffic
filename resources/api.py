@@ -343,7 +343,7 @@ def send_request_credit_yes(p_partner_id, p_sample_type, p_token, p_product, p_u
         #test_url
         #url_credit_yes = "https://dev.credityes.com.ua/registrationExternal"
         #prod_url
-        url_credit_yes = "https://credityes.com.ua/registrationExternal"
+        url_credit_yes = "https://www.credityes.com.ua/registrationExternal"
 
         logger_credit_yes.info("LEAD_ID: " + str(p_custom_identifier))
         logger_credit_yes.info("URL: " + str(url_credit_yes))
@@ -366,7 +366,7 @@ def send_request_credit_yes(p_partner_id, p_sample_type, p_token, p_product, p_u
                 "persId": p_pers_id,
                 "loanAmount": p_loan_amount,
                 "loanPeriod": p_loan_period,
-                "shortConsent": p_short_consent
+                "consentRules": p_short_consent
               }
             })
         # time.sleep(1)
