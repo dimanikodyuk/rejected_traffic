@@ -388,8 +388,9 @@ def send_request_credit_yes(p_partner_id, p_sample_type, p_token, p_product, p_u
             logger_credit_yes.info("RESPONSE JSON: " + str(response).replace('\'', '`'))
             if result['status'] == 'Success':
                 status = 'Success'
-                #order_id = result['orderId']
-                mod.update_lead(p_custom_identifier, p_partner_id, 0, status, 0, 0, p_sample_type, None)
+                order_id = result['orderId']
+                print(f"ORDER_ID: {order_id}")
+                mod.update_lead(p_custom_identifier, p_partner_id, 0, status, 0, 0, p_sample_type, order_id)
             elif result['status'] == 'Rejected':
                 status = 'Rejected'
                 mod.update_lead(p_custom_identifier, p_partner_id, 0, status, 0, 0, p_sample_type, None)
