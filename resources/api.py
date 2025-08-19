@@ -456,6 +456,7 @@ def send_request_traffic_magnit(p_lead_id, p_partner_id, p_sample_type, token, p
             status_desc = resp_json.get("message")
             logger_traffic_magnit.info(f"LID: {p_lead_id}, REST_JSON: {resp_json}")
 
+
             # === Обробка кодів ===
             if status == 202:
                 status_info = f"LID {p_lead_id} accepted:, {resp_json}"

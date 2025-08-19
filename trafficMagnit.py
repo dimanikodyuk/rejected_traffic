@@ -26,6 +26,7 @@ if __name__ == "__main__":
                     p_sub3 = 'FinX'
                     p_sub4 = 'FinX'
 
+
                     send_request_traffic_magnit(p_lead_id, p_partner_id, p_sample_type, token, p_contact_number, p_first_name,
                                                 p_last_name, p_patronymic, p_sub3, p_sub4)
     except TypeError as err:
