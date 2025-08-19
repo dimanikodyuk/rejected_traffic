@@ -68,6 +68,13 @@ dict_log_config = {
             'backupCount': 10,
             'formatter': 'api_formatter',
         },
+        'RotatingFileHandler8': {
+            'filename': f'{dir}/traffic_magnit.log',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'maxBytes': 50000000,
+            'backupCount': 10,
+            'formatter': 'api_formatter',
+        },
     },
     'loggers': {
         'admitad': {
@@ -98,6 +105,10 @@ dict_log_config = {
             'handlers': ['RotatingFileHandler7'],
             'level': 'INFO'
         },
+        'traffic_magnit': {
+            'handlers': ['RotatingFileHandler8'],
+            'level': 'INFO'
+        },
     },
     'formatters': {
         'api_formatter': {
@@ -115,3 +126,4 @@ logger_finstorm = logging.getLogger('finstorm')
 logger_test = logging.getLogger('test')
 logger_ecpc = logging.getLogger('ecpc')
 logger_credit_yes = logging.getLogger('credit_yes')
+logger_traffic_magnit = logging.getLogger('traffic_magnit')

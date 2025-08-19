@@ -1,8 +1,14 @@
 import requests
 import json
 import db.models as mod
-from resources.api_logs import logger_admitad, logger_finline, logger_teleport, logger_finstorm, logger_ecpc, logger_credit_yes
+from db.config import base_url_traffic_magnet, username_traffic_magnet
+from resources.api_logs import (logger_admitad, logger_finline, logger_teleport, logger_finstorm, logger_ecpc,
+                                logger_credit_yes, logger_traffic_magnit)
 import urllib3
+import base64
+from Crypto.Cipher import AES
+from urllib.parse import quote_plus
+
 import time
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
@@ -406,3 +412,148 @@ def send_request_credit_yes(p_partner_id, p_sample_type, p_token, p_product, p_u
         logger_credit_yes.error("[ValueError] api.py - send_request_credit_yes: " + str(err))
     except Exception as err:
         logger_credit_yes.error("[Exception] api.py - send_request_credit_yes: " + str(err))
+
+
+
+def send_request_traffic_magnit(p_lead_id, p_partner_id, p_sample_type, token, p_contact_number, p_first_name,
+                                                p_last_name, p_patronymic, p_sub3, p_sub4):
+    # ==== Налаштування ====
+    BASE_URL = base_url_traffic_magnet
+    USERNAME = username_traffic_magnet
+    PASSWORD = token
+
+    # Креденшіали для Basic Auth
+    credentials = f"{USERNAME}:{PASSWORD}"
+    auth_header = base64.b64encode(credentials.encode()).decode()
+
+    headers_common = {
+        "Authorization": f"Basic {auth_header}",
+        "Content-Type": "application/json"
+    }
+
+    body_data = {
+            "contact_number": f"{p_contact_number}",
+            "first_name": f"{p_first_name}",
+            "last_name": f"{p_last_name}",
+            "patronymic": f"{p_patronymic}",
+            "sub3": f"{p_sub3}",
+            "sub4": f"{p_sub4}",
+    }
+
+    # ==== Retry-логіка ====
+    def send_with_retry(url, headers, payload, max_retries=5):
+        retries = 0
+        while retries <= max_retries:
+            response = requests.post(url, headers=headers, json=payload)
+
+            try:
+                resp_json = response.json()
+            except Exception:
+                resp_json = {f"DETAIL": f"Invalid JSON in response by LID - {p_lead_id}: {response}"}
+                logger_traffic_magnit.error(resp_json)
+
+            status = response.status_code
+            status_desc = resp_json.get("message")
+            logger_traffic_magnit.info(f"LID: {p_lead_id}, REST_JSON: {resp_json}")
+
+            # === Обробка кодів ===
+            if status == 202:
+                status_info = f"LID {p_lead_id} accepted:, {resp_json}"
+                logger_traffic_magnit.info(status_info)
+                # TODO: оновити статус у БД (успіх)
+                mod.update_lead(p_lead_id, p_partner_id, 0, status_desc, 0, 0, p_sample_type, 0)
+                #update_lead(p_lead_id, p_partner_id, p_partner_uuid, p_lead_status, p_partner_error, p_dublicate, p_stream_id, p_aliase_id)
+                return resp_json
+
+            elif status == 400:
+                status_info = f"Bad Request by LID {p_lead_id}:, {resp_json}"
+                logger_traffic_magnit.info(status_info)
+                # TODO: оновити статус у БД (відхилено через помилку даних)
+                mod.update_lead(p_lead_id, p_partner_id, 0, status_desc, 0, 0, p_sample_type, 0)
+                # update_lead(p_lead_id, p_partner_id, p_partner_uuid, p_lead_status, p_partner_error, p_dublicate, p_stream_id, p_aliase_id)
+
+                return resp_json
+
+            elif status == 401:
+                status_info = f"Unauthorized:, {resp_json}"
+                logger_traffic_magnit.info(status_info)
+                # TODO: лог помилки авторизації, можливо зупинити обробку
+                mod.update_lead(p_lead_id, p_partner_id, 0, status_desc, 0, 0, p_sample_type, 0)
+                # update_lead(p_lead_id, p_partner_id, p_partner_uuid, p_lead_status, p_partner_error, p_dublicate, p_stream_id, p_aliase_id)
+                return resp_json
+
+            elif status == 409:
+                status_info = f"Conflict (duplicate LID {p_lead_id}):, {resp_json}"
+                logger_traffic_magnit.info(status_info)
+                # TODO: оновити статус у БД (дублікат)
+                mod.update_lead(p_lead_id, p_partner_id, 0, status_desc, 0, 1, p_sample_type, 0)
+                # update_lead(p_lead_id, p_partner_id, p_partner_uuid, p_lead_status, p_partner_error, p_dublicate, p_stream_id, p_aliase_id)
+
+                return resp_json
+
+            elif status == 429:
+                wait_time = 2 ** retries  # exponential backoff: 2,4,8,16...
+                status_info = f"Too Many Requests (LID {p_lead_id}). Retrying in {wait_time}s..."
+                logger_traffic_magnit.info(status_info)
+
+                time.sleep(wait_time)
+                retries += 1
+                continue  # повторна спроба
+
+            else:
+                status_info = f"Unexpected status (LID {p_lead_id}) {status}:, {resp_json}"
+                logger_traffic_magnit.info(status_info)
+                # TODO: логувати інші відповіді
+                mod.update_lead(p_lead_id, p_partner_id, 0, status_desc, 0, 0, p_sample_type, 0)
+                # update_lead(p_lead_id, p_partner_id, p_partner_uuid, p_lead_status, p_partner_error, p_dublicate, p_stream_id, p_aliase_id)
+                return resp_json
+
+        status_info = f"Max retries reached, LID {p_lead_id} not sent"
+        logger_traffic_magnit.info(status_info)
+        # TODO: логувати невдачу після всіх спроб
+        mod.update_lead(p_lead_id, p_partner_id, 0, status_desc, 0, 0, p_sample_type, 0)
+        # update_lead(p_lead_id, p_partner_id, p_partner_uuid, p_lead_status, p_partner_error, p_dublicate, p_stream_id, p_aliase_id)
+        return None
+
+    # ==== 1. Decrypted endpoint ====
+    def submit_decrypted_lead():
+        url = f"{BASE_URL}/decrypted"
+        print(f"URL: {url}")
+        print(f"headers_common: {headers_common}")
+        print(f"body_data: {body_data}")
+        return send_with_retry(url, headers_common, body_data)
+
+    # ==== 2. Encrypted endpoint ====
+    def pad(data: bytes, block_size=16) -> bytes:
+        """PKCS7 padding для AES"""
+        pad_len = block_size - (len(data) % block_size)
+        return data + bytes([pad_len] * pad_len)
+
+    def encrypt_aes256_ecb(data: dict, key: str) -> str:
+        """Шифрує JSON у AES-256-ECB"""
+        raw_json = json.dumps(data, ensure_ascii=False).encode("utf-8")
+        cipher = AES.new(key.encode("utf-8"), AES.MODE_ECB)
+        encrypted_bytes = cipher.encrypt(pad(raw_json, 16))
+        return quote_plus(encrypted_bytes.hex())  # hex + URL encode
+
+    def submit_encrypted_lead():
+        url = f"{BASE_URL}/encrypted"
+
+        # Ключ для шифрування (узгоджений з партнером)
+        encryption_key = f"{token}"  # рівно 32 символи
+
+        encrypted_body = {
+            "request_body": encrypt_aes256_ecb(body_data, encryption_key)
+        }
+
+        headers_enc = headers_common.copy()
+        headers_enc["api-key"] = "your_api_key"  # якщо потрібно
+        headers_enc["X-Decryption-Key"] = encryption_key  # якщо потрібно
+
+        print(f"URL: {url}")
+        print(f"headers_enc: {headers_enc}")
+        print(f"encrypted_body: {encrypted_body}")
+        return send_with_retry(url, headers_enc, encrypted_body)
+
+    submit_decrypted_lead()
+    #submit_encrypted_lead()
